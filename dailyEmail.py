@@ -77,7 +77,9 @@ def getFulanoMail(i):
 ### Variáveis simulam um database para envio de cada e-mail
 dbnome = ['John Doe', 'Jackin']
 dbsigno = ['peixes', 'touro']
-dbmail = ['example@gmail.com', 'freezer@gmail.com]
+dbmail = ['example@gmail.com', 'freezer@gmail.com']
+          
+       
 '''
 ##teste unitário####################
 dbnome = []
