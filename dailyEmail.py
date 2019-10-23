@@ -74,12 +74,16 @@ def getFulanoMail(i):
     return fulanoMail
 
 
-### Variáveis simulam um database para envio de cada e-mail
+# Variáveis simulam um database para envio de cada e-mail
 dbnome = ['John Doe', 'Jackin']
 dbsigno = ['peixes', 'touro']
 dbmail = ['example@gmail.com', 'freezer@gmail.com']
           
-       
+
+    
+    
+# Para manter o script o mais simples possivel, em um unico arquivo, você pode usar o campo abaixo para gerar um teste unitário ao seu
+# e-mail pessoal, confirmando as construções da mensagem.
 '''
 ##teste unitário####################
 dbnome = []
