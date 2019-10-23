@@ -13,9 +13,8 @@ def generateMsg (horoscopo, fulano, previsao):
     print('Mensagem Concatenada!')
     return msg
 
-# Componente da mensagem em generateMsg
+# Componente de horóscopo que será concatenado na mensagem
 def getHoroscopo(signo):
-    #get horoscopo do dia using date
     url = 'http://babi.hefesto.io/signo/' + signo + '/dia'
     pedidoHoroscopo = requests.get(url)
     json_pedidoHoroscopo = json.loads(pedidoHoroscopo.text)
@@ -23,6 +22,7 @@ def getHoroscopo(signo):
     print('Horoscopo Carregado!')
     return horoscopo
 
+# Componente de previsão da temperatura que será concatenado na mensagem
 def getWeather():
     def toCelsiusString(temp):
         temp = str(int(temp - 273.15)) + 'º'
@@ -33,10 +33,8 @@ def getWeather():
     raw_weather = json.loads(json_weather.text)
     temp_min = raw_weather['main']['temp_min']
     temp_max = raw_weather['main']['temp_max']
-
     temp_min = toCelsiusString(temp_min)
     temp_max = toCelsiusString(temp_max)
-
     temp_min = 'Temperatura mínima: ' + temp_min
     temp_max = 'Temperatura máxima: ' + temp_max
 
@@ -44,25 +42,25 @@ def getWeather():
 
     return previsao
 
-# Módulo de envio da mensagem, identificação do servidor, etc...
+# Função responsavel pelo envio da mensagem, identificação do servidor, etc...
+# Em casos de customização não esqueça de alterar os dados abaixo
 def sendEmail (msg, fulanoMail):
     message = MIMEMultipart()
-    message['From'] = 'dailynewsdbmgpbr@gmail.com'
-    message['To'] = fulanoMail
-    message['Subject'] = 'Daily News DBM GPBR'
+    message['From'] = 'dailynewsdbmgpbr@gmail.com' # E-mail de envio
+    message['To'] = fulanoMail 
+    message['Subject'] = 'Daily News DBM GPBR' # Subject do email
     message['Body'] = msg
-    smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+    smtpObj = smtplib.SMTP('smtp.gmail.com', 587) # SMTP padrão do gmail, caso use algum outro e-mail, altere os parametros.
     type(smtpObj)
     smtpObj.ehlo()
     smtpObj.starttls()
-    smtpObj.login('dailynewsdbmgpbr@gmail.com', 'daily153!')
+    smtpObj.login('YOUR-EMAIL', 'YOUR-PASSWORD') #Informações de login e senha do e-mail
     smtpObj.sendmail(message['From'], message['To'], message['Body'])
     print('E-mail enviado!')
 
-#def getCotation():
 
 
-# Functions para obter informações do envio
+# Functions para obter informações do envio atráves do "DataBase"
 def getSigno (i):
     signo = dbsigno[i]
     return signo
@@ -76,23 +74,23 @@ def getFulanoMail(i):
     return fulanoMail
 
 
-dbnome = ['Marieli', 'Vagner Dias dos Santos', 'Flávia', 'Shindi', 'Roberta', 'Rafael', 'Eliana', 'Danilo Alves', 'Marcella', 'Renato Fagaraz', 'Isadora']
-dbsigno = ['peixes', 'libra', 'virgem', 'cancer', 'aries', 'aries', 'aries', 'touro', 'touro', 'cancer', 'cancer']
-dbmail = ['mari.dgm@hotmail.com', 'vsantos@greenpeace.org', 'flaviasouza1144@gmail.com', 'amiashir@greenpeace.org', 'roberta.ita@greenpeace.org', 'rafael.ferraz@greenpeace.org', 'eliana.goncalves@greenpeace.org', 'danilo.alves@greenpeace.org', 'marcella.ferreira@greenpeace.org', 'rfagaraz@greenpeace.org', 'isadora.nascimento@greenpeace.org']
+### Variáveis simulam um database para envio de cada e-mail
+dbnome = ['John Doe', 'Jackin']
+dbsigno = ['peixes', 'touro']
+dbmail = ['example@gmail.com', 'freezer@gmail.com]
 '''
 ##teste unitário####################
-dbnome = ['Mariellen']
-dbsigno = ['peixes']
-dbmail = ['mari.dgm@hotmail.com']
+dbnome = []
+dbsigno = []
+dbmail = []
 ####################################
 '''
 
 
 # Run script
-
+# previsao é uma constante nos e-mails, por tanto apenas uma chamada para agilizar a execução          
 previsao = getWeather()
-
-
+# Loop de execução envia um e-mail para cada registro nos arrays do "DataBase"
 for i in range(len(dbnome)):
     sendEmail(generateMsg(getHoroscopo(getSigno(i)), getFulano(i), previsao), getFulanoMail(i))
 
